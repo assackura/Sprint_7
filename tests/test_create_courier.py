@@ -1,6 +1,6 @@
 import pytest
 import allure
-from data import UserLoginWithOutParams
+from data import UserLoginWithOutParams, ResponseMessages
 
 class TestCreateCourier:
 
@@ -19,7 +19,7 @@ class TestCreateCourier:
         response_double = courier.create_courier(new_user_data["login"], new_user_data["password"], new_user_data["firstName"])
         courier.delete_courier_by_login_password(new_user_data["login"], new_user_data["password"])
 
-        assert response_double.status_code == 409 and response_double.json()['message'] == 'Этот логин уже используется'
+        assert response_double.status_code == 409 and response_double.json()['message'] == ResponseMessages.LOGIN_ALREADY_EXIST
 
     @allure.title('Тест создания нового курьера без необходимых данных')
     @allure.description('Тест проверяет, что API вернет ошибку при отсутствии одно или более полей в теле запроса')
@@ -27,5 +27,5 @@ class TestCreateCourier:
     def test_create_courier_without_params(self, login, password, firstName, courier):
         response = courier.create_courier(login, password, firstName)
 
-        assert response.status_code == 400 and response.json()['message'] == 'Недостаточно данных для создания учетной записи'
+        assert response.status_code == 400 and response.json()['message'] == ResponseMessages.INSUFFICIENT_DATA_CREATE
 

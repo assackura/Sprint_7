@@ -1,8 +1,10 @@
 import allure
 from api_methods.base import Base
+from data import EndPoints
 
 class Orders(Base):
 
+    @allure.step('Отменяем ранее созданный заказ')
     def cancel_order(self, track):
         body_parametrs = {
             "track": track,
@@ -10,6 +12,7 @@ class Orders(Base):
         response = self.put_method("api/v1/orders/cancel", body_parametrs)
         return response
 
+    @allure.step('Получаем список заказов')
     def get_list_orders(self, courierId=None, nearestStation=None, limit=None, page=None):
         param = ""
         if courierId != None:
@@ -23,9 +26,10 @@ class Orders(Base):
         if param != "":
             param = "?" + param[1:]
 
-        response = self.get_mehtod(f"api/v1/orders{param}")
+        response = self.get_mehtod(EndPoints.ORDER + param)
         return response
 
+    @allure.step('Создаем новый заказ')
     def create_order(self, firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color=None):
         body_parametrs = {
             "firstName": firstName,
@@ -39,6 +43,6 @@ class Orders(Base):
         }
         if color != None:
             body_parametrs["color"] = color
-        response = self.post_method("api/v1/orders", body_parametrs)
+        response = self.post_method(EndPoints.ORDER, body_parametrs)
         return response
 

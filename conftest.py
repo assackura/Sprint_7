@@ -21,3 +21,11 @@ def courier():
 def order():
     order = Orders()
     return order
+    
+@pytest.fixture(scope='function')
+def create_delete_login(new_user_data, courier):
+    courier.create_courier(new_user_data["login"], new_user_data["password"], new_user_data["firstName"])
+    yield new_user_data
+    
+    response_login = courier.login_courier_in_system(new_user_data["login"], new_user_data["password"])
+    courier.delete_courier(response_login.json()['id'])

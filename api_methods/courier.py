@@ -1,5 +1,6 @@
 import allure
 from api_methods.base import Base
+from data import EndPoints
 
 class Courier(Base):
 
@@ -10,7 +11,7 @@ class Courier(Base):
             body_parametrs["login"] = login
         if password != None:
             body_parametrs["password"] = password
-        response = self.post_method("api/v1/courier/login", body_parametrs)
+        response = self.post_method(EndPoints.LOGIN_COURIER, body_parametrs)
         return response
 
     @allure.step('Создаем курьера')
@@ -20,7 +21,7 @@ class Courier(Base):
             "password": password,
             "firstName": firstName
         }
-        response = self.post_method("api/v1/courier", body_parametrs)
+        response = self.post_method(EndPoints.CREATE_DELETE_COURIER, body_parametrs)
         return response
 
     @allure.step('Удаляем курьера по его идентификатору')
@@ -28,7 +29,7 @@ class Courier(Base):
         body_parametrs ={
             "id": courier_id
         }
-        response = self.post_method(f"api/v1/courier/{courier_id}", body_parametrs)
+        response = self.post_method(f"{EndPoints.CREATE_DELETE_COURIER}/{courier_id}", body_parametrs)
         return response
 
     @allure.step('Удаляем курьера по логину и паролю')
